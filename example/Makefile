@@ -49,6 +49,9 @@ OBJS    =	$(SOBJS) $(COBJS)
 #Keep the objects files
 .SECONDARY: $(OBJS)
 
+#Mark targets which are not "file-targets"
+.PHONY: all debug flash clean
+
 
 # List of all binaries to build
 all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
@@ -57,7 +60,7 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
 %.elf : $(OBJS)
 	@echo Linking...
 	$(MKDIR) $(BUILD_DIR)
-	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -T./stm32f4_flash.ld $^
+	$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -T./utils/stm32f4_flash.ld $^
 
 #elf to binary
 %.bin: %.elf
@@ -78,3 +81,13 @@ all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).bin
 clean:
 	rm -rf $(BUILD_DIR) $(OBJ_DIR)
 	rm -f $(SOURCE_DIR)/*.o
+
+#Debug target: starts gdb and leaves it open
+debug: all
+	arm-none-eabi-gdb $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script
+
+#Flash target: flashes the elf with gdb and exits afterwards
+flash: all
+	arm-none-eabi-gdb $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script -batch
+
+
