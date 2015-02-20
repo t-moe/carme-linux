@@ -11,13 +11,13 @@ We'd like to enable linux enthusiastic students of the bern university of applie
 
 ## Installation and required packages
 
-
 You'll need the following packages installed on your system: 
 
         arm-none-eabi-binutils
         arm-none-eabi-gcc
         arm-none-eabi-gdb
         arm-none-eabi-newlib
+        stlink
         make
 
 The package names are taken from the arch linux community repository, hence they may differ on your linux distribution.
@@ -29,8 +29,10 @@ The package names are taken from the arch linux community repository, hence they
 - Clone the repository.
 - Install the required software packages.
 - Plug in your carme-m4.
+- Don't forget to add yourself to the group 'dialout' by invoking "gpasswd -a ${USER} dialout"
     
 #### using make
+
 Build software: make all
 Debug software: make debug
 flash software: make flash
@@ -41,7 +43,9 @@ flash software: make flash
 - id101010
 
 ## Links
+
 - https://carme.bfh.ch
 
 ## Additional Tags
+
 stm32, stm32f407, bfh ti, berner fachhochschule für technik und informatik, carme-m4, atollic true studio, linux
