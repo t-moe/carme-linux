@@ -1,4 +1,4 @@
-#2015 by tmoe, (and the internet :) )
+#2015 by tmoe, id10101 (and the internet :) )
 
 #Name of the binary/project
 TARGET=hello
@@ -10,7 +10,11 @@ TARGET=hello
 CROSS_COMPILE=arm-none-eabi-
 CC=$(CROSS_COMPILE)gcc
 OBJCOPY=$(CROSS_COMPILE)objcopy
+GDB=$(CROSS_COMPILE)gdb
+
 MKDIR=mkdir -p
+RM=rm -f
+RMDIR=rm -rf
 STUTIL=utils/st-util-daemon.sh
 
 #Directories
@@ -77,17 +81,13 @@ stop:
 
 #Clean Obj files and builded stuff
 clean:
-	rm -rf $(BUILD_DIR) $(OBJ_DIR)
-	rm -f $(SOURCE_DIR)/*.o
+	$(RMDIR) $(BUILD_DIR) $(OBJ_DIR)
+	$(RM) $(SOURCE_DIR)/*.o
 
 #Debug target: starts the st-util server and gdb and leaves it open
 debug: start all
-	arm-none-eabi-gdb $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script
-	$(STUTIL) stop
+	$(GDB) $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script
 
 #Flash target: starts the st-util server flashes the elf with gdb and exits afterwards
 flash: start all
-	arm-none-eabi-gdb $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script -batch
-	$(STUTIL) stop
-
-
+	$(GDB) $(BUILD_DIR)/$(TARGET).elf -x ./utils/gdb.script -batch

@@ -27,11 +27,9 @@
 #include <color.h>
 #include <stm32f4xx_adc.h>
 
-#define LED 	((volatile unsigned char*)(0x6C000200))
-#define SWITCH 	((volatile unsigned char*)(0x6C000400))
 #define SPEED	500000
 
-uint16_t colors[12] = {
+uint16_t colors[] = {
 	GUI_COLOR_BLACK,
 	GUI_COLOR_WHITE,
 	GUI_COLOR_LIGHT_GRAY,
@@ -47,12 +45,16 @@ uint16_t colors[12] = {
 	GUI_COLOR_MAGENTA
 };
 
+
+
+volatile unsigned char* LED = (volatile unsigned char*)0x6C000200;
+volatile unsigned char* SWITCH = (volatile unsigned char*)0x6C000400;
+
 int main(void)
 {
 	int i = 0, j = 0, m = 0;
-	unsigned char *led = LED;
 
-	*led = 0b00000001;
+	*LED = 0b00000001;
 
 	LCD_Init();
 	LCD_Clear(GUI_COLOR_RED);
@@ -64,12 +66,12 @@ int main(void)
 			LCD_Clear(colors[m]);
 
 			for(i = 0; i < 7; i++){
-				*led<<=1;
+				*LED<<=1;
 				for(j = 0; j < SPEED; j++);
 			}
 
 			for(i = 7; i > 0; i--){
-				*led>>=1;
+				*LED>>=1;
 				for(j = 0; j < SPEED; j++);
 			}
 		}
