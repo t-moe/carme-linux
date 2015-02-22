@@ -37,6 +37,14 @@ The package names are taken from the arch linux community repository, hence they
 - Debug software: make debug
 - flash software: make flash
 
+#### eclipse support
+
+If you want to use eclipse instead of pure makefiles you are free to do so and we are happy to support you with that:
+
+- Checkout the readme in the eclipse directory for instructions on how to install and configure eclipse correctly.
+- Import the example project into eclipse as "existing project" and have fun :)
+
+
 ## Contributors
 
 - t-moe
