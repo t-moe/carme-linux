@@ -36,6 +36,8 @@ The package names are taken from the arch linux community repository, hence they
 - Build software: make all
 - Debug software: make debug
 - flash software: make flash
+- start/stop st-util deamon: make start/stop
+
 
 #### eclipse support
 

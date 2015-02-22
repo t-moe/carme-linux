@@ -9,8 +9,9 @@ Eclipse CDT integrates seamlessly with makefile projects. Furthermore you can fl
 
 - Install eclipse (normal package)
 - Run the script install.sh. It will install CDT and the required plugins to get you started.
-- Now just import the example project as "existing project" and you're ready to go.
 
+- Now just import the example project as "existing project" and you're ready to go.
+- Remember to type "make start" before you work with the target.
 
 ## Known Issues / Remarks
 
