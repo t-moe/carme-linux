@@ -4,12 +4,17 @@
 #
 
 pid=/tmp/st-util.pid
+isp=/dev/stlinkv2_2
 
 case "$1" in
     "start")
         if [ -e ${pid} ]; then
             echo -e "[\033[32m:)\033[m] st-util already running."
             exit 0
+        fi
+        if [ ! -e ${isp} ]; then
+            echo -e "[\033[31mError\033[m] No Stlink v2 connected."
+            exit 0    
         fi
         echo -e "[\033[32m:)\033[m] Starting st-util."
         /bin/st-util > /dev/null 2>&1 &

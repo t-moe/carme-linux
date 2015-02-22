@@ -33,9 +33,9 @@ The package names are taken from the arch linux community repository, hence they
     
 #### using make
 
-Build software: make all
-Debug software: make debug
-flash software: make flash
+- Build software: make all
+- Debug software: make debug
+- flash software: make flash
 
 ## Contributors
 
