@@ -3,9 +3,6 @@
 #Name of the binary/project
 TARGET=hello
 
-#Known issues:
-#obj dir is not actually used, obj's are placed under source
-
 #Tools
 CROSS_COMPILE=arm-none-eabi-
 CC=$(CROSS_COMPILE)gcc
@@ -18,8 +15,8 @@ RMDIR=rm -rf
 STUTIL=utils/st-util-daemon.sh
 
 #Directories
-SOURCE_DIR=./src
-OBJ_DIR=./obj # not used yet
+SRC_DIR=./src
+OBJ_DIR=./obj
 BUILD_DIR=./build
 LIB_DIR=./libs
 
@@ -35,14 +32,13 @@ LDFLAGS+=-Wl,-Map=$(BUILD_DIR)/$(TARGET).map
 LDFLAGS+=-Wl,--gc-sections -Wl,--defsym=malloc_getpagesize_P=0x1000
 
 #Finding Input files
-CFILES=$(shell find $(SOURCE_DIR) -name '*.c')
-#CFILES=$(notdir $(wildcard $(SOURCE_DIR)/*.c))
-SFILES=$(SOURCE_DIR)/startup.s
+CFILES=$(shell find $(SRC_DIR) -name '*.c')
+SFILES=$(SRC_DIR)/startup.s
 
 #Generate corresponding obj names
 SOBJS=$(SFILES:.s=.o)
 COBJS=$(CFILES:.c=.o)
-OBJS=$(SOBJS) $(COBJS)
+OBJS=$(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SOBJS) $(COBJS))
 
 #Keep the objects files
 .SECONDARY: $(OBJS)
@@ -70,19 +66,20 @@ stop:
 	$(OBJCOPY) -O binary $< $@
 
 #Asm files to objects
-%.o: %.s
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 	@echo Assembling $<...
+	$(MKDIR) $(OBJ_DIR)
 	$(CC) -x assembler-with-cpp $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 #C files to objects
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo Compiling $<...
+	$(MKDIR) $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 #Clean Obj files and builded stuff
 clean:
 	$(RMDIR) $(BUILD_DIR) $(OBJ_DIR)
-	$(RM) $(SOURCE_DIR)/*.o
 
 #Debug target: starts the st-util server and gdb and leaves it open
 debug: start all
